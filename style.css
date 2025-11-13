@@ -31,6 +31,21 @@
 * {
     box-sizing: border-box;
 }
+@keyframes sparkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    25% { opacity: 0.6; transform: scale(1.1); }
+    50% { opacity: 0.8; transform: scale(0.9); }
+    75% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0, 0); opacity: 1; }
+    20% { transform: translate(-1px, 1px); opacity: 0.9; }
+    40% { transform: translate(1px, -1px); opacity: 0.95; }
+    60% { transform: translate(-1px, -1px); opacity: 0.85; }
+    80% { transform: translate(1px, 1px); opacity: 0.92; }
+}
+
 body {
     font-family: "Noto Sans KR", "Pixelify Sans", "Galmuri11", sans-serif;
     margin: 0;
@@ -41,12 +56,23 @@ body {
         linear-gradient(0deg, rgba(0,0,0,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
     background-size: 16px 16px;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='12,2 14.9,8.5 22,9.2 16.5,13.7 18.3,20.7 12,16.9 5.7,20.7 7.5,13.7 2,9.2 9.1,8.5' fill='%23FF6AB9'/%3E%3C/svg%3E") 12 12, auto;
+    cursor: none;
+}
+
+.cursor-star {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 32px;
+    color: rgba(255, 106, 185, 0.9);
+    text-shadow: 0 0 4px rgba(255, 106, 185, 0.5);
 }
 a {
     text-decoration: none;
     color: inherit;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='12,2 14.9,8.5 22,9.2 16.5,13.7 18.3,20.7 12,16.9 5.7,20.7 7.5,13.7 2,9.2 9.1,8.5' fill='%23FF6AB9'/%3E%3C/svg%3E") 12 12, pointer;
+    cursor: none;
 }
 ul {
     list-style: none;
@@ -54,15 +80,15 @@ ul {
 }
 button {
     background-color: transparent;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='12,2 14.9,8.5 22,9.2 16.5,13.7 18.3,20.7 12,16.9 5.7,20.7 7.5,13.7 2,9.2 9.1,8.5' fill='%23FF6AB9'/%3E%3C/svg%3E") 12 12, pointer;
     border: none;
     outline: none;
 }
-.category__btn,
-.btns__logo,
-.btns__menu .btn,
-.arrow-up {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='12,2 14.9,8.5 22,9.2 16.5,13.7 18.3,20.7 12,16.9 5.7,20.7 7.5,13.7 2,9.2 9.1,8.5' fill='%23FF6AB9'/%3E%3C/svg%3E") 12 12, pointer;
+.btns__logo img {
+    width: 50px;
+    height: 50px;    
+    position: relative;
+    z-index: 1;
+    margin-right: auto;
 }
 
 body {
@@ -74,30 +100,49 @@ section {
     width: 100%;
     /* height: 100vh; */
     text-align: center;
+    margin-bottom: 80px;
 }
 /* section:nth-child(odd) {
     background-color: skyblue;
 } */
 .wrapper {
     padding-top: 88px;
+    padding-bottom: 60px;
     max-width: 1200px;
     margin: auto;
 }
 h1 {
     color: var(--color-dark-grey);
-    font-size: 48px;
-    font-family: "Press Start 2P", "Galmuri11", monospace;
+    font-size: 56px;
+    font-family: "Jersey 10", "Galmuri11", monospace;
     letter-spacing: 1px;
     text-transform: uppercase;
+    margin-bottom: 30px;
+    margin-top: 20px;
+    paint-order: stroke fill;
+    -webkit-text-stroke: 2px rgba(235, 210, 224, .92);
+    text-shadow: 
+        -2px -2px 0 rgba(235, 210, 224, .92),
+        2px -2px 0 rgba(235, 210, 224, .92),
+        -2px 2px 0 rgba(235, 210, 224, .92),
+        2px 2px 0 rgba(235, 210, 224, .92),
+        -2px 0 0 rgba(235, 210, 224, .92),
+        2px 0 0 rgba(235, 210, 224, .92),
+        0 -2px 0 rgba(235, 210, 224, .92),
+        0 2px 0 rgba(235, 210, 224, .92);
 }
 h2 {
-    font-size: 32px;
+    font-size: 28px;
     font-family: "Galmuri9", "Pixelify Sans", "Galmuri11", monospace;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 h3 {
     font-size: 24px;
     font-weight: 400;
     font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .btns {
     position: fixed;
@@ -125,19 +170,7 @@ h3 {
     backdrop-filter: blur(8px);
     border-bottom: 2px solid var(--color-dark-grey);
 }
-.btns__logo {
-    position: relative;
-    z-index: 1;
-    margin-right: auto;
-    font-family: "Press Start 2P", "Galmuri11", monospace;
-    font-size: 12px;
-    letter-spacing: 2px;
-    padding: 10px 0;
-    background-color: transparent;
-    color: var(--color-black);
-    border: none;
-    text-transform: uppercase;
-}
+
 .btns__logo:hover {
     opacity: 0.8;
 }
@@ -159,7 +192,7 @@ h3 {
     font-family: "Press Start 2P", "Galmuri11", monospace;
     background-color: #EBD2E0;
     border: 2px solid var(--color-black);
-    box-shadow: 4px 4px 0 var(--color-black);
+    box-shadow: 4px 4px 0 #4B4646;
     text-transform: uppercase;
     letter-spacing: .5px;
     text-shadow:
@@ -173,7 +206,7 @@ h3 {
     background-color: var(--color-white);
     color: var(--color-black);
     border-color: var(--color-black);
-    box-shadow: 6px 6px 0 var(--color-black);
+    box-shadow: 6px 6px 0 #4B4646;
     text-shadow:
         -1px 0 0 #ffffff,
         1px 0 0 #ffffff,
@@ -190,7 +223,7 @@ h3 {
     color: var(--color-white);
     border: 2px solid var(--color-black);
     border-radius: 0;
-    box-shadow: 4px 4px 0 var(--color-black);
+    box-shadow: 4px 4px 0 #4B4646;
     opacity: 0;
     transition: .3s;
     
@@ -203,17 +236,17 @@ h3 {
 }
 
 .work__categories {
-    margin: 40px;
+    margin: 60px 40px;
 }
 .category__btn {
     border: 2px solid var(--color-black);
     font-size: var(--font-regular);
     padding: 8px 48px;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
     font-family: "Press Start 2P", "Galmuri11", monospace;
     background-color: var(--color-white);
     color: var(--color-black);
-    box-shadow: 4px 4px 0 var(--color-black);
+    box-shadow: 4px 4px 0 #4B4646;
     border-radius: 0;
     text-transform: uppercase;
 }
@@ -243,7 +276,7 @@ h3 {
     opacity: 0;
     transition: all var(--animation-duration) ease;
     border: 2px solid var(--color-black);
-    box-shadow: 2px 2px 0 var(--color-black);
+    box-shadow: 2px 2px 0 #4B4646;
 }
 
 .work__projects {
@@ -253,6 +286,8 @@ h3 {
     min-height: 380px;
     opacity: 1;
     transition: all var(--animation-duration) ease-out;
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 .work__projects.anim-out {
@@ -265,12 +300,13 @@ h3 {
     display: none;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 32px;
     width: min(520px, 90%);
-    padding: 32px;
+    padding: 40px;
+    margin: 40px 0;
     background-color: var(--color-light-white);
     border: 2px solid var(--color-black);
-    box-shadow: 4px 4px 0 var(--color-black);
+    box-shadow: 4px 4px 0 #4B4646;
     border-radius: 0;
 }
 .project.active {
@@ -286,7 +322,7 @@ h3 {
     aspect-ratio: 16 / 10;
     object-fit: cover;
     border: 2px solid var(--color-black);
-    box-shadow: 4px 4px 0 var(--color-black);
+    box-shadow: 4px 4px 0 #4B4646;
     filter: grayscale(100%) contrast(1.05);
 }
 .project__description {
@@ -297,10 +333,10 @@ h3 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    padding: 24px;
+    gap: 16px;
+    padding: 32px;
     border: 2px solid var(--color-black);
-    box-shadow: 4px 4px 0 var(--color-black);
+    box-shadow: 4px 4px 0 #4B4646;
     transition: transform var(--animation-duration) ease;
 }
 
@@ -337,4 +373,675 @@ h3 {
 #contact h3 {
     color: var(--color-white);
 }
+
+#contact h1 {
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+}
+
+/* Profile Section */
+#home {
+    text-align: center;
+    margin: auto;
+}
+
+#home h1 {
+    text-align: center;
+}
+
+#home .profile__container {
+    text-align: left;
+}
+
+.profile__container {
+    display: flex;
+    gap: 48px;
+    margin-top: 60px;
+    align-items: flex-start;
+}
+
+.profile__left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.profile__image-wrapper {
+    width: 280px;
+    height: 280px;
+    border: 2px solid var(--color-black);
+    box-shadow: 4px 4px 0 #4B4646;
+    background-color: var(--color-light-white);
+    overflow: hidden;
+}
+
+.profile__image {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+}
+
+.profile__info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile__name {
+    font-size: 32px;
+    font-family: "Galmuri11";
+    color: var(--color-black);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.profile__description {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile__description p {
+    font-size: 16px;
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    color: var(--color-dark-grey);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.profile__right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.skills__title {
+    font-size: 24px;
+    font-family: "Press Start 2P", "Galmuri11", monospace;
+    color: var(--color-black);
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.skills__list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.skill__item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.skill__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.skill__name {
+    font-size: 16px;
+    font-family: "Press Start 2P", "Galmuri11", monospace;
+    color: var(--color-black);
+    text-transform: uppercase;
+}
+
+.skill__level {
+    font-size: 14px;
+    font-family: "Press Start 2P", "Galmuri11", monospace;
+    color: var(--color-dark-grey);
+}
+
+.skill__bar {
+    width: 100%;
+    height: 24px;
+    background-color: var(--color-light-white);
+    border: 2px solid var(--color-black);
+    box-shadow: 2px 2px 0 #4B4646;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill__progress {
+    height: 100%;
+    background-color: rgba(235, 210, 224, .92);
+    transition: width 0.8s ease;
+    border-right: 2px solid var(--color-black);
+}
+
+/* Contact Section */
+.contact__container {
+    display: flex;
+    gap: 60px;
+    margin-top: 60px;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+.contact__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    text-align: left;
+    padding-top: 8px;
+}
+
+.contact__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+}
+
+.contact__icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-white);
+    font-size: 20px;
+    line-height: 1;
+    font-family: "Press Start 2P", "Galmuri11", monospace;
+}
+
+.contact__item h3 {
+    margin: 0;
+    font-size: 18px;
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    color: var(--color-white);
+}
+
+.contact__form-wrapper {
+    flex: 1;
+    padding-top: 8px;
+}
+
+.contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form__label {
+    font-size: 14px;
+    font-family: "Press Start 2P", "Galmuri11", monospace;
+    color: var(--color-white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form__input,
+.form__textarea {
+    padding: 12px 16px;
+    font-size: 16px;
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+    color: var(--color-black);
+    background-color: var(--color-white);
+    border: 2px solid var(--color-black);
+    box-shadow: 4px 4px 0 #4B4646;
+    outline: none;
+    resize: vertical;
+    transition: box-shadow var(--animation-duration) ease;
+}
+
+.form__input:focus,
+.form__textarea:focus {
+    box-shadow: 6px 6px 0 #4B4646;
+}
+
+.form__textarea {
+    min-height: 150px;
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+.form__submit {
+    padding: 14px 32px;
+    font-size: 14px;
+    font-family: "Press Start 2P", "Galmuri11", monospace;
+    color: var(--color-black);
+    background-color: rgba(235, 210, 224, .92);
+    border: 2px solid var(--color-white);
+    box-shadow: 4px 4px 0 #4B4646;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: none;
+    transition: all var(--animation-duration) ease;
+    align-self: flex-start;
+}
+
+.form__submit:hover {
+    background-color: var(--color-white);
+    box-shadow: 6px 6px 0 #4B4646;
+    transform: translate(-2px, -2px);
+}
+
+.form__submit:active {
+    box-shadow: 2px 2px 0 #4B4646;
+    transform: translate(2px, 2px);
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .profile__container,
+    .contact__container {
+        flex-direction: column;
+    }
+    
+    .profile__image-wrapper {
+        width: 200px;
+        height: 200px;
+        align-self: center;
+    }
+}
+
+/* Intro Page */
+.intro-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #EBD2E0;
+    opacity: 1;
+    transition: opacity 0.8s ease-out;
+}
+
+.intro-page.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.intro-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #EBD2E0;
+    background-image: 
+        /* 편지지 가로 줄무늬 (픽셀 스타일) - 가장 아래 레이어 */
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 39px,
+            rgba(235, 210, 224, 0.7) 39px,
+            rgba(235, 210, 224, 0.7) 40px
+        ),
+        /* 세로 여백선 (왼쪽) */
+        linear-gradient(90deg,
+            transparent 0px,
+            transparent 39px,
+            rgba(235, 210, 224, 0.9) 39px,
+            rgba(235, 210, 224, 0.9) 40px,
+            transparent 40px
+        ),
+        /* 세로 여백선 (오른쪽) */
+        linear-gradient(90deg,
+            transparent calc(100% - 40px),
+            rgba(235, 210, 224, 0.9) calc(100% - 40px),
+            rgba(235, 210, 224, 0.9) calc(100% - 39px),
+            transparent calc(100% - 39px)
+        ),
+        /* 찢긴 가장자리 효과 (좌측) */
+        linear-gradient(90deg, 
+            transparent 0px,
+            transparent 2px,
+            rgba(0, 0, 0, 0.05) 2px,
+            rgba(0, 0, 0, 0.05) 3px,
+            transparent 3px,
+            transparent 5px,
+            rgba(0, 0, 0, 0.03) 5px,
+            rgba(0, 0, 0, 0.03) 6px,
+            transparent 6px
+        ),
+        /* 찢긴 가장자리 효과 (우측) */
+        linear-gradient(90deg,
+            transparent calc(100% - 6px),
+            rgba(0, 0, 0, 0.03) calc(100% - 6px),
+            rgba(0, 0, 0, 0.03) calc(100% - 5px),
+            transparent calc(100% - 5px),
+            transparent calc(100% - 3px),
+            rgba(0, 0, 0, 0.05) calc(100% - 3px),
+            rgba(0, 0, 0, 0.05) calc(100% - 2px),
+            transparent calc(100% - 2px)
+        ),
+        /* 찢긴 가장자리 효과 (상단) */
+        linear-gradient(0deg,
+            transparent 0px,
+            transparent 2px,
+            rgba(0, 0, 0, 0.05) 2px,
+            rgba(0, 0, 0, 0.05) 3px,
+            transparent 3px
+        ),
+        /* 찢긴 가장자리 효과 (하단) */
+        linear-gradient(0deg,
+            transparent calc(100% - 3px),
+            rgba(0, 0, 0, 0.05) calc(100% - 3px),
+            rgba(0, 0, 0, 0.05) calc(100% - 2px),
+            transparent calc(100% - 2px)
+        );
+    background-size: 
+        100% 40px,
+        40px 100%,
+        40px 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%;
+    background-position:
+        0 0,
+        0 0,
+        100% 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0;
+    background-repeat: repeat, repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
+
+@keyframes waveRise {
+    0% {
+        height: 0;
+        background-position: 
+            0 100%,
+            20px 100%,
+            -10px 100%;
+    }
+    25% {
+        background-position: 
+            0 75%,
+            20px 73%,
+            -10px 77%;
+    }
+    50% {
+        background-position: 
+            0 50%,
+            20px 48%,
+            -10px 52%;
+    }
+    75% {
+        background-position: 
+            0 25%,
+            20px 23%,
+            -10px 27%;
+    }
+    100% {
+        height: 100%;
+        background-position: 
+            0 0%,
+            20px -2%,
+            -10px 2%;
+        clip-path: polygon(
+            0% 0%,
+            5% 2%,
+            10% 0%,
+            15% 3%,
+            20% 0%,
+            25% 1%,
+            30% 0%,
+            35% 2%,
+            40% 0%,
+            45% 3%,
+            50% 0%,
+            55% 1%,
+            60% 0%,
+            65% 2%,
+            70% 0%,
+            75% 3%,
+            80% 0%,
+            85% 1%,
+            90% 0%,
+            95% 2%,
+            100% 0%
+        );
+    }
+}
+
+/* 배경 오버레이 제거 - 단순한 픽셀 파동만 사용 */
+.intro-background::before,
+.intro-background::after {
+    display: none;
+}
+
+@keyframes pixelMove {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-16px);
+    }
+}
+
+.letter-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    transform: rotate(-8deg);
+    z-index: 10;
+}
+
+/* Envelope - 편지지처럼 평면 형태 */
+.envelope {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.envelope-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background-color: #F5F0F3;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0 #4B4646;
+    background-image: 
+        /* 찢긴 가장자리 효과 (좌측) */
+        linear-gradient(90deg, 
+            transparent 0px,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 3px,
+            transparent 3px
+        ),
+        /* 찢긴 가장자리 효과 (우측) */
+        linear-gradient(90deg,
+            transparent calc(100% - 3px),
+            rgba(0, 0, 0, 0.03) calc(100% - 3px),
+            rgba(0, 0, 0, 0.03) calc(100% - 2px),
+            transparent calc(100% - 2px)
+        ),
+        /* 찢긴 가장자리 효과 (상단) */
+        linear-gradient(0deg,
+            transparent 0px,
+            transparent 2px,
+            rgba(0, 0, 0, 0.03) 2px,
+            rgba(0, 0, 0, 0.03) 3px,
+            transparent 3px
+        ),
+        /* 찢긴 가장자리 효과 (하단) */
+        linear-gradient(0deg,
+            transparent calc(100% - 3px),
+            rgba(0, 0, 0, 0.03) calc(100% - 3px),
+            rgba(0, 0, 0, 0.03) calc(100% - 2px),
+            transparent calc(100% - 2px)
+        ),
+        /* 편지지 가로 줄무늬 (픽셀 스타일) */
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 39px,
+            rgba(235, 210, 224, 0.4) 39px,
+            rgba(235, 210, 224, 0.4) 40px
+        ),
+        /* 세로 여백선 (왼쪽) */
+        linear-gradient(90deg,
+            transparent 0px,
+            transparent 39px,
+            rgba(235, 210, 224, 0.6) 39px,
+            rgba(235, 210, 224, 0.6) 40px,
+            transparent 40px
+        ),
+        /* 세로 여백선 (오른쪽) */
+        linear-gradient(90deg,
+            transparent calc(100% - 40px),
+            rgba(235, 210, 224, 0.6) calc(100% - 40px),
+            rgba(235, 210, 224, 0.6) calc(100% - 39px),
+            transparent calc(100% - 39px)
+        );
+    background-size: 
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 40px,
+        40px 100%,
+        40px 100%;
+    background-position:
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        100% 0;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat;
+    opacity: 1;
+    animation: envelopeFade 0.5s ease-out 1.2s forwards;
+}
+
+.envelope-flap {
+    display: none;
+}
+
+@keyframes envelopeFade {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+/* Letter */
+.letter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 160px;
+    height: 200px;
+    transform: translate(-50%, -50%) translateY(40px);
+    opacity: 0;
+    animation: letterPullOut 1.2s ease-out 1.2s forwards;
+    z-index: 3;
+}
+
+.letter-content {
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0 #4B4646;
+    position: relative;
+    transform-style: preserve-3d;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 4px,
+            rgba(0, 0, 0, 0.02) 4px,
+            rgba(0, 0, 0, 0.02) 5px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 4px,
+            rgba(0, 0, 0, 0.02) 4px,
+            rgba(0, 0, 0, 0.02) 5px
+        );
+}
+
+.letter-content::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    height: 2px;
+    background-color: #EBD2E0;
+    box-shadow: 0 20px 0 #EBD2E0, 0 40px 0 #EBD2E0, 0 60px 0 #EBD2E0, 0 80px 0 #EBD2E0, 0 100px 0 #EBD2E0, 0 120px 0 #EBD2E0;
+}
+
+@keyframes letterPullOut {
+    0% {
+        transform: translate(-50%, -50%) translateY(60px) rotate(-8deg);
+        opacity: 0;
+    }
+    30% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) translateY(30px) rotate(-6deg);
+    }
+    60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(-30px) rotate(-4deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) translateY(-100px) rotate(-8deg) scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* Pixelated effect for envelope and letter */
+.envelope-body,
+.letter-content {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* Responsive for intro */
+@media (max-width: 768px) {
+    .letter-container {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .envelope {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .envelope-body {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .letter {
+        width: 120px;
+        height: 150px;
+    }
+}
+
 
