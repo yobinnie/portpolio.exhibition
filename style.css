@@ -49,6 +49,12 @@
     80% { transform: translate(1px, 1px); opacity: 0.92; }
 }
 
+/* 추가: 배경 패턴 애니메이션 */
+@keyframes backgroundPatternMove {
+    0% { background-position: 10% 20%, 90% 85%, 80% 10%, 15% 90%, 90% 5%, 50% 50%, 5% 10%, calc(100% + 20px) calc(100% - 50px), -50px 150px, 50% 95%, 10px 10px, 0 0, 0 0; }
+    100% { background-position: 12% 22%, 88% 83%, 82% 12%, 17% 88%, 88% 7%, 52% 52%, 7% 12%, calc(100% + 22px) calc(100% - 48px), -48px 152px, 52% 93%, 30px 30px, 16px 16px, 16px 16px; }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -59,6 +65,50 @@ body {
     cursor: none;
     color: var(--color-dark-grey);
     background-color: var(--color-background);
+    animation: backgroundPatternMove 40s linear infinite alternate;
+    /* --- 진짜 조잡한 스크랩북 배경 --- */
+    background-image:
+        /* 1. 반짝이 스티커 (가장 위) */
+        radial-gradient(circle at 15% 15%, rgba(255, 223, 186, 0.7) 1px, transparent 2px),
+        radial-gradient(circle at 80% 90%, rgba(173, 216, 230, 0.7) 1px, transparent 2px),
+        /* 2. 손으로 그린 하트 낙서 */
+        radial-gradient(circle at 50% 50%, transparent 4px, rgba(255, 105, 180, 0.4) 5px, transparent 6px),
+        /* 3. 다양한 색상의 마스킹 테이프 조각들 */
+        linear-gradient(45deg, rgba(255, 182, 193, 0.5) 0%, rgba(255, 182, 193, 0.5) 100%), /* 핑크 */
+        linear-gradient(-30deg, rgba(173, 216, 230, 0.5) 0%, rgba(173, 216, 230, 0.5) 100%), /* 하늘 */
+        linear-gradient(10deg, rgba(255, 248, 186, 0.6) 0%, rgba(255, 248, 186, 0.6) 100%), /* 노랑 */
+        linear-gradient(-60deg, rgba(221, 160, 221, 0.5) 0%, rgba(221, 160, 221, 0.5) 100%), /* 연보라 */
+        /* 4. 여러 색상의 반투명 포스트잇 */
+        linear-gradient(135deg, transparent 15px, rgba(255, 228, 225, 0.4) 15px), /* 연핑크 */
+        linear-gradient(-35deg, transparent 15px, rgba(240, 248, 255, 0.4) 15px), /* 연하늘 */
+        linear-gradient(20deg, transparent 15px, rgba(240, 255, 240, 0.4) 15px), /* 민트 */
+        /* 5. 점 패턴 + 기본 격자 패턴 (가장 아래) */
+        radial-gradient(rgba(216, 191, 216, 0.3) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size:
+        /* 1. 반짝이 */
+        60px 60px, 80px 80px,
+        /* 2. 하트 */
+        120px 120px,
+        /* 3. 테이프 */
+        120px 30px, 100px 25px, 150px 35px, 30px 100px,
+        /* 4. 포스트잇 */
+        250px 200px, 200px 280px, 220px 220px,
+        /* 5. 패턴 */
+        20px 20px, 16px 16px, 16px 16px;
+    background-position:
+        /* 1. 반짝이 */
+        10% 20%, 90% 85%,
+        /* 2. 하트 */
+        80% 10%,
+        /* 3. 테이프 */
+        15% 90%, 90% 5%, 50% 50%, 5% 10%,
+        /* 4. 포스트잇 */
+        calc(100% + 20px) calc(100% - 50px), -50px 150px, 50% 95%,
+        /* 5. 패턴 */
+        10px 10px, 0 0, 0 0;
+    background-repeat: repeat, repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat;
 }
 
 .cursor-star {
@@ -327,6 +377,7 @@ h3 {
     position: relative;
     width: 100%;
     max-width: 900px;
+    background-color: #FEF5F7; /* 아주 연한 핑크색 배경 추가 */
     min-height: 600px;
     border: 3px solid #5C4A37;
     box-shadow: var(--flat-shadow)
@@ -416,9 +467,10 @@ h3 {
 .project__img {
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    object-position: top;
+    /* --- 원본 이미지 비율을 유지하도록 아래 속성 제거 --- */
+    /* aspect-ratio: 16 / 10; */
+    /* object-fit: cover; */
+    /* object-position: top; */
     background-color: #F5F5F0;
     border: 1px solid rgba(75, 70, 70, 0.3);
     box-shadow: 
@@ -1711,10 +1763,10 @@ h3 {
     transform: translateX(-50%);
     width: 100px; /* 크기 키움 */
     height: 40px;
-    background: linear-gradient(180deg, #C0C0C0 0%, #808080 100%);
-    border: 2px solid #5C5C5C;
+    background: linear-gradient(180deg, #ff85c1 0%, #e1118a 100%); /* 핫핑크 그라데이션으로 변경 */
+    border: 2px solid var(--color-black); /* 테두리 색상 통일 */
     border-radius: 8px 8px 0 0; /* 위쪽만 둥글게 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 0 var(--color-black); /* 플랫 섀도우로 변경 */
     z-index: 6;
 }
 
