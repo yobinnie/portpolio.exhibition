@@ -1668,12 +1668,68 @@ h3 {
     transform: scale(1.04);
     background: #f0f0f0;
 }
+/* ---------- 추가된 장식 요소 (다이어리 꾸미기 스타일) ---------- */
+
+/* 1. ID 카드 주변 장식 강화 */
+.id-card {
+    position: relative; /* 자식 위치 기준 */
+}
+
+/* ID 카드 위를 고정하는 듯한 마스킹 테이프 조각 */
+.id-card::after {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: 40px;
+    width: 120px;
+    height: 30px;
+    background: rgba(255, 182, 217, 0.6); /* 반투명 핑크 */
+    transform: rotate(5deg);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+    border-left: 1px dashed rgba(255,255,255,0.7);
+    border-right: 1px dashed rgba(255,255,255,0.7);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* 2. 스킬 섹션 주변 장식 */
+.skills__section {
+    position: relative; /* 자식 위치 기준 */
+}
+
+/* 스킬 섹션 제목 옆에 작은 별 스티커 */
+.skills__title::before {
+    content: '✦';
+    font-size: 20px;
+    color: #FFB6D9;
+    margin-right: 12px;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+    display: inline-block;
+    transform: translateY(-2px);
+}
+
+/* 3. 스크랩북 보드에 클립보드 집게 추가 */
+.scrapbook-board {
+    position: relative;
+    padding-top: 80px; /* 집게 공간 확보 */
+}
+
+.scrapbook-board::before {
+    content: '';
+    position: absolute;
+    top: 20px; /* 위치 조정 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px; /* 크기 키움 */
+    height: 40px;
+    background: linear-gradient(180deg, #C0C0C0 0%, #808080 100%);
+    border: 2px solid #5C5C5C;
+    border-radius: 8px 8px 0 0; /* 위쪽만 둥글게 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 6;
+}
 
 @media (max-width: 600px) {
     .image-modal__img { max-height: calc(100vh - 110px); }
     .image-modal__close { width: 36px; height:36px; font-size:18px; }
 }
-
-
-
-
