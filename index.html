@@ -81,7 +81,9 @@
                 padding-top: 120px;
             }
         }
+
     </style>
+
 
 </head>
 <body>
@@ -217,7 +219,7 @@
                 <button class="category__btn selected" data-filter="visual">ILLIT</button>
                 <button class="category__btn" data-filter="web">Rom&nd</button>
                 <button class="category__btn" data-filter="mobile">Hansel&Gretel</button>
-                <h3>* 이미지 클릭 - 전체 사이즈 or 사이트 이동 / 쪽지 아이콘 - 소개</h3>
+                <h3>* 이미지 클릭 - 전체 사이즈 / 쪽지 아이콘 - 소개</h3>
             </div>
             <div class="work__projects">
                 <div class="scrapbook-board">
@@ -286,7 +288,7 @@
                                     <h3 class="project__title">[ Hansel&Gretel ]</h3>
                                     <p class="project__type">Illustration</p>
                                     <p class="project__description">헨젤과 그레텔 일러스트_ 2025.9 - 2025.10 <br>
-                                    동화 '헨젤과 그레텔'을 모티브로 한 일러스트 작업. <br>동화 속 주인공들이 숲 속에서 길을 잃고 마녀의 집을 발견한 시점을<br> 음침하고 어두운 분위기 보다는 어린아이들이 현혹 될 수 밖에 없는<br> 달콤함을 표현하기 위하여 파스텔톤과 초코아 컬러 위주로 사용하였다.
+                                    동화 '헨젤과 그레텔'을 모티브로 한 일러스트 작업. <br>동화 속 주인공들이 숲 속에서 길을 잃고 마녀의 집을 발견한 시점을<br> 음침하고 어두운 분위기 보다는 어린아이들이 현혹 될 수 밖에 없는<br> 달콤함을 표현하기 위하여 파스텔톤과 코코아 컬러 위주로 사용하였다.
                                     </p>
                                 </div>
                             </div>
@@ -350,6 +352,15 @@
     </button>
 
     <div class="cursor-star" id="cursorStar">*</div>
+
+    <!-- Image modal (click image to enlarge) -->
+    <div id="imageModal" class="image-modal" aria-hidden="true">
+        <div class="image-modal__inner" role="dialog" aria-modal="true">
+            <button class="image-modal__close" aria-label="Close">&times;</button>
+            <img class="image-modal__img" src="" alt="">
+            <div class="image-modal__caption"></div>
+        </div>
+    </div>
 
     <script>
         // Intro Page Control
@@ -451,24 +462,11 @@
                 e.stopPropagation();
                 const project = icon.closest('.project');
                 project.classList.toggle('expanded');
-            });
-        });
-
-        // 프로젝트 트리거 클릭 시에도 편지지 펼치기/접기
-        const projectTriggers = document.querySelectorAll('.project__trigger');
-        projectTriggers.forEach((trigger) => {
-            trigger.addEventListener('click', (e) => {
-                const project = trigger.closest('.project');
-                const icon = trigger.querySelector('.project__icon');
-                // 아이콘이나 아이콘 내부 이미지를 클릭한 경우는 제외
-                if (e.target !== icon && !icon.contains(e.target)) {
-                    project.classList.toggle('expanded');
-                    // 편지지가 펼쳐지면 스크롤
-                    if (project.classList.contains('expanded')) {
-                        setTimeout(() => {
-                            project.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                        }, 100);
-                    }
+                // 편지지가 펼쳐지면 스크롤
+                if (project.classList.contains('expanded')) {
+                    setTimeout(() => {
+                        project.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 100);
                 }
             });
         });
@@ -480,38 +478,73 @@
             });
         }
 
-        // 4) 프로필 사진 스택 인터랙션
-        (function() {
-            const photoStack = document.getElementById('photoStack');
-            const front = document.getElementById('photoFront');
-            const pixel = document.getElementById('photoPixel');
-            const bubble = document.getElementById('pixelBubble');
+        // --- Image Modal Logic ---
+        const modal = document.getElementById('imageModal');
+        const modalImg = modal.querySelector('.image-modal__img');
+        const modalInner = modal.querySelector('.image-modal__inner');
+        const closeModalBtn = modal.querySelector('.image-modal__close');
+        let isZoomed = false;
 
-            function togglePixelReveal() {
-                photoStack.classList.toggle('revealed');
-                // 가벼운 '슈룩' 사운드나 추가 효과를 넣고 싶으면 이곳에 추가
+        // 모달 열기 함수
+        function openModal(imgElement) {
+            const imgSrc = imgElement.src;
+            modalImg.src = imgSrc;
+
+            // 웹 시안 이미지(illit, romand)에 대한 특별 처리
+            if (imgSrc.includes('illit.png') || imgSrc.includes('romand.jpg')) {
+                modalInner.classList.add('scrollable');
+            } else {
+                modalInner.classList.remove('scrollable');
             }
 
-            // 앞 사진 또는 말풍선 클릭 시 픽셀이 앞으로 슬라이드
-            [front, bubble].forEach(el => {
-                if (el) el.addEventListener('click', togglePixelReveal);
-            });
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+            document.addEventListener('keydown', handleEscKey);
+        }
 
-            // 뒤 이미지가 앞에 나온 상태에서 뒤쪽 클릭하면 원상복구 (선택)
-            if (pixel) {
-                pixel.addEventListener('click', () => {
-                    photoStack.classList.remove('revealed');
-                });
+        // 모달 닫기 함수
+        function closeModal() {
+            modal.classList.remove('open');
+            document.body.style.overflow = ''; // 배경 스크롤 복원
+            // 닫힐 때 줌 상태와 스크롤 클래스 초기화
+            isZoomed = false;
+            modalImg.style.transform = 'scale(1)';
+            modalInner.classList.remove('scrollable');
+            document.removeEventListener('keydown', handleEscKey);
+        }
+
+        // ESC 키로 모달 닫기
+        function handleEscKey(event) {
+            if (event.key === 'Escape') {
+                closeModal();
             }
+        }
 
-            // 키보드 접근성: Enter/Space on bubble
-            bubble.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    togglePixelReveal();
-                }
+        // 이미지 클릭 이벤트 (모달 열기)
+        document.querySelectorAll('.project__img, .id-card__img').forEach(img => {
+            img.addEventListener('click', function(event) {
+                if (event.target.closest('button')) return;
+                openModal(this);
             });
-        })();
+        });
+
+        // 확대/축소 기능
+        modalImg.addEventListener('click', (event) => {
+            event.stopPropagation(); // 이벤트 버블링 방지
+            if (modalInner.classList.contains('scrollable')) return; // 스크롤 모드일 때는 줌 비활성화
+
+            isZoomed = !isZoomed;
+            modalImg.style.transform = isZoomed ? 'scale(1.5)' : 'scale(1)';
+        });
+
+        // 닫기 버튼 및 배경 클릭 이벤트
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => {
+            // 이미지(modalImg)나 내부 컨테이너(modalInner)가 아닌 바깥 영역을 클릭했을 때 닫힘
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
