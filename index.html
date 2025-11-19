@@ -54,7 +54,7 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            background-image: url(img/stamp.png);
+            background-image: url(stamp.png);
             align-self: center;
             position: absolute;
             right: 0;
@@ -106,8 +106,7 @@
     <div class="btns">
         <div class="container">
             <div class="btns__bgcolor"></div>
-            <button class="btns__logo" type="button"><img src="img/logo.png" alt="logo"></button>
-            <p>WHATthePINK</p>
+            <button class="btns__logo" type="button"><img src="logo.png" alt="logo"></button>
             <div class="btns__menu">
                 <button class="btn home">Home</button>
                 <button class="btn works">Works</button>
@@ -129,7 +128,7 @@
 
             <div class="id-card">
                 <div class="id-card__photo">
-                    <img src="img/profile.png" alt="profile photo" class="id-card__img">
+                    <img src="profile.png" alt="profile photo" class="id-card__img">
                 </div>
                 <div class="id-card__info">
                     <div class="id-card__header">
@@ -232,10 +231,10 @@
                     <div class="project active" data-type="visual">
                         <div class="project__trigger">
                             <div class="project__img-wrapper">
-                                <img src="img/illit.png" alt="project__illit" class="project__img">
+                                <img src="illit.png" alt="project__illit" class="project__img">
                             </div>
                             <button class="project__icon" aria-label="more">
-                                <img src="img/memo.png" alt="letter icon">
+                                <img src="memo.png" alt="letter icon">
                             </button>
                         </div>
                         <div class="project__letter">
@@ -253,10 +252,10 @@
                     <div class="project" data-type="web">
                         <div class="project__trigger">
                             <div class="project__img-wrapper">
-                                <img src="img/romand.jpg" alt="project__romand" class="project__img">
+                                <img src="romand.jpg" alt="project__romand" class="project__img">
                             </div>
                             <button class="project__icon" aria-label="more">
-                                <img src="img/memo.png" alt="letter icon">
+                                <img src="memo.png" alt="letter icon">
                             </button>
                         </div>
                         <div class="project__letter">
@@ -276,10 +275,10 @@
                     <div class="project" data-type="mobile">
                         <div class="project__trigger">
                             <div class="project__img-wrapper">
-                                <img src="img/illu.png" alt="illust" class="project__img">
+                                <img src="illu.png" alt="illust" class="project__img">
                             </div>
                             <button class="project__icon" aria-label="more">
-                                <img src="img/memo.png" alt="letter icon">
+                                <img src="memo.png" alt="letter icon">
                             </button>
                         </div>
                         <div class="project__letter">
@@ -491,7 +490,7 @@
             modalImg.src = imgSrc;
 
             // 웹 시안 이미지(illit, romand)에 대한 특별 처리
-            if (modalImg.src.includes('illit.png') || modalImg.src.includes('romand.jpg')) {
+            if (modalImg.src.includes('illit.png') || modalImg.src.includes('romand.jpg')) {            
                 modalInner.classList.add('scrollable');
             } else {
                 modalInner.classList.remove('scrollable');
